@@ -51,6 +51,8 @@ def main():
     (options, args) = parser.parse_args()
     keep_saved = options.keep_saved
     download_location = options.download_location
+    if not download_location:
+        download_location = os.path.dirname(os.path.abspath(__file__)) + "\\down"
     if not os.path.exists(download_location):
         os.makedirs(download_location)
     items = gr(keep_saved)
