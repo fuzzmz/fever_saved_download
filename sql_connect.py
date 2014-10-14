@@ -1,3 +1,4 @@
+import os
 from sqlalchemy.dialects.mysql.base import LONGTEXT, TINYINT
 from sqlalchemy.ext.declarative.api import declarative_base
 from sqlalchemy.orm.session import sessionmaker
@@ -6,10 +7,9 @@ import ConfigParser
 import sys
 
 
-def make_connection():
-    # TODO ask for configuration file location
+def make_connection(config_location):
     config = ConfigParser.ConfigParser()
-    config.read(".\\config.ini")
+    config.read(config_location)
     username = config.get('connection_info', 'user')
     password = config.get('connection_info', 'password')
     hostname = config.get('connection_info', 'host')
@@ -17,8 +17,10 @@ def make_connection():
     database = config.get('connection_info', 'db')
     connection = 'mysql://%s:%s@%s:%s/%s' % (username, password, hostname, port, database)
     return connection
-def main(keep_saved):
-    engine = create_engine(make_connection(), echo=False)
+def main(keep_saved, config_location):
+    if not config_location:
+        config_location = os.path.dirname(os.path.abspath(__file__)) + "\\config.ini"
+    engine = create_engine(make_connection(config_location), echo=False)
     Session = sessionmaker(bind=engine)
     session = Session()
 
@@ -42,4 +44,4 @@ def main(keep_saved):
 
 
 if __name__ == "__main__":
-    main(bool(sys.argv[1]))
+    main(bool(sys.argv[1]), str(sys.argv[2]))
