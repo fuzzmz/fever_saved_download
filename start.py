@@ -17,11 +17,13 @@ def get_items(f_obj):
 
 
 def get_links(items):
+    # TODO if a post has multiple image links get them all.
     links = []
     for item in items:
         if item is not None and isinstance(item, (str, unicode)):
-            # TODO get only image links from the post contents
-            links.append(re.search(r"(http(s?):([/|.|\w|\s])*\.(?:jpg|gif|png))", item).group(0))
+            result = re.search(r"(http(s?):([/|.|\w|\s])*\.(?:jpg|gif|png))", item)
+            if result:
+                links.append(result.group(0))
     return links
 
 
