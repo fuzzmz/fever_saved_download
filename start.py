@@ -40,10 +40,16 @@ def main():
     parser = OptionParser()
     parser.add_option("-s", "--save", action="store_true", dest="keep_saved", default=False,
                       help="Do not mark items as unsaved")
+    parser.add_option("-d", "--download", action="store", dest="download_location", default=False,
+                      help="Download location")
     (options, args) = parser.parse_args()
     keep_saved = options.keep_saved
+    download_location = options.download_location
     items = gr(keep_saved)
     links = get_links(items)
+    download_map = []
+    for a in links:
+        download_map.append((a, download_location))
     parallel_start(links)
 
 if __name__ == "__main__":
