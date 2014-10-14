@@ -26,7 +26,7 @@ def parallel_start(links):
 
 def download_files(link):
     # TODO allow download location selection
-    f = open(str("d:\\repos\\fever_saved_download\\down\\" + link[link.rfind('/')+1:]),'wb')
+    f = open(str("d:\\repos\\fever_saved_download\\down\\" + link[link.rfind('/')+1:]), 'wb')
     f.write(urllib.urlopen(link).read())
     f.close()
 

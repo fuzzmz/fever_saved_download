@@ -11,6 +11,7 @@ def main():
     session = Session()
 
     Base = declarative_base()
+
     class fever_items(Base):
         __tablename__ = 'fever_items'
 
