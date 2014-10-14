@@ -34,8 +34,12 @@ def download_files(download_map):
     location = download_map[1]
     link = download_map[0][0]
     f = open((location + "\\" + link[link.rfind('/') + 1:]), 'wb')
+    try:
     f.write(urllib.urlopen(link).read())
     f.close()
+    except IOError:
+        print "Couldn't download image from " + link + "\n"
+        return
 
 
 def main():
