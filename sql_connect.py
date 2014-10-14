@@ -3,10 +3,20 @@ from sqlalchemy.dialects.mysql.base import TINYINT
 from sqlalchemy.ext.declarative.api import declarative_base
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy import *
+import ConfigParser
 
 
 def main():
-    engine = create_engine('mysql://URL', echo=False)
+    # TODO ask for configuration file location
+    config = ConfigParser.ConfigParser()
+    config.read(".\\config.ini")
+    username = config.get('connection_info', 'user')
+    password = config.get('connection_info', 'password')
+    hostname = config.get('connection_info', 'host')
+    port = config.get('connection_info', 'port')
+    database = config.get('connection_info', 'db')
+    connection = 'mysql://%s:%s@%s:%s/%s' % (username, password, hostname, port, database)
+    engine = create_engine(connection, echo=False)
     Session = sessionmaker(bind=engine)
     session = Session()
 
