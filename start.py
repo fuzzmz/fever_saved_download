@@ -7,13 +7,17 @@ from sql_connect import main as gr
 
 
 def get_links(items):
-    # TODO if a post has multiple image links get them all.
     links = []
     for item in items:
+        matches = 0
         if item is not None:
-            result = re.search(r"(http(s?):([/|.|\w|\s])*\.(?:jpg|gif|png))", item[0])
-            if result:
-                links.append(result.group(0))
+            matches = re.findall(r"(http(s?):([/|.|\w|\s])*\.(?:jpg|gif|png))", item[0])
+            match_no = len(matches)
+            if matches:
+                while match_no:
+                    match_no -= 1
+                    link = matches[match_no]
+                    links.append(link)
     return links
 
 
