@@ -1,3 +1,4 @@
+from optparse import OptionParser
 __author__ = 'Constantin Serban'
 
 import re
@@ -36,7 +37,12 @@ def download_files(link):
 
 
 def main():
-    items = gr()
+    parser = OptionParser()
+    parser.add_option("-s", "--save", action="store_true", dest="keep_saved", default=False,
+                      help="Do not mark items as unsaved")
+    (options, args) = parser.parse_args()
+    keep_saved = options.keep_saved
+    items = gr(keep_saved)
     links = get_links(items)
     parallel_start(links)
 
