@@ -3,6 +3,8 @@ __author__ = 'Constantin Serban'
 import optparse
 import csv
 import re
+import urllib2
+from multiprocessing.dummy import Pool as ThreadPool
 
 
 def get_items(f_obj):
@@ -27,7 +29,13 @@ def get_links(items):
 
 def download_files(links):
     # TODO download all images
-    pass
+    # Make the Pool of workers and set the pool size to 4
+    pool = ThreadPool(4)
+    # Open the urls in their own threads and return the results
+    results = pool.map(urllib2.urlopen, links)
+    # Close the pool and wait for the work to finish
+    pool.close()
+    pool.join()
 
 
 def main():
