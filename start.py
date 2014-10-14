@@ -22,16 +22,18 @@ def get_links(items):
     return links
 
 
-def parallel_start(links):
+def parallel_start(download_map):
     pool = ThreadPool(4)
-    results = pool.map(download_files, links)
+    results = pool.map(download_files, download_map)
     pool.close()
     pool.join()
 
 
-def download_files(link):
+def download_files(download_map):
     # TODO allow download location selection
-    f = open(str("d:\\repos\\fever_saved_download\\down\\" + link[link.rfind('/')+1:]), 'wb')
+    location = download_map[1]
+    link = download_map[0]
+    f = open((location + "\\" + link[link.rfind('/') + 1:]), 'wb')
     f.write(urllib.urlopen(link).read())
     f.close()
 
@@ -50,7 +52,7 @@ def main():
     download_map = []
     for a in links:
         download_map.append((a, download_location))
-    parallel_start(links)
+    parallel_start(download_map)
 
 if __name__ == "__main__":
     main()
