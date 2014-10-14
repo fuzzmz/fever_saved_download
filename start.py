@@ -2,7 +2,7 @@ __author__ = 'Constantin Serban'
 
 import optparse
 import csv
-
+import re
 
 # TODO download all .jpg images
 
@@ -18,9 +18,11 @@ def get_items(f_obj):
 
 def get_links(items):
     links = []
-    # for item in items:
-        # TODO get only image links from the post contents
-    pass
+    for item in items:
+        if item is not None and isinstance(item, (str, unicode)):
+            # TODO get only image links from the post contents
+            links.append(re.search(r"(http(s?):([/|.|\w|\s])*\.(?:jpg|gif|png))", item).group(0))
+    return links
 
 
 def main():
