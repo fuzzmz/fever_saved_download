@@ -48,14 +48,17 @@ def main():
                       help="Do not mark items as unsaved")
     parser.add_option("-d", "--download", action="store", dest="download_location", default=False,
                       help="Download location")
+    parser.add_option("-c", "--config", action="store", dest="config_location", default=False,
+                      help="Configuration file location")
     (options, args) = parser.parse_args()
     keep_saved = options.keep_saved
     download_location = options.download_location
+    config_location = options.config_location
     if not download_location:
         download_location = os.path.dirname(os.path.abspath(__file__)) + "\\down"
     if not os.path.exists(download_location):
         os.makedirs(download_location)
-    items = gr(keep_saved)
+    items = gr(keep_saved, config_location)
     links = get_links(items)
     download_map = []
     for a in links:
