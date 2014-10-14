@@ -3,8 +3,9 @@ __author__ = 'Constantin Serban'
 import optparse
 import csv
 import re
-import urllib2
+import urllib
 from multiprocessing.dummy import Pool as ThreadPool
+from uuid import uuid4
 
 
 def get_items(f_obj):
@@ -27,15 +28,23 @@ def get_links(items):
     return links
 
 
-def download_files(links):
+def parallel_start(links):
     # TODO download all images
     # Make the Pool of workers and set the pool size to 4
     pool = ThreadPool(4)
     # Open the urls in their own threads and return the results
-    results = pool.map(urllib2.urlopen, links)
+    results = pool.map(download_files, links)
     # Close the pool and wait for the work to finish
     pool.close()
     pool.join()
+
+
+def download_files(link):
+    # TODO verify that it works
+    # TODO use the actual file extension instead of always using .jpg
+    f = open(str(uuid4()) + ".jpg",'wb')
+    f.write(urllib.urlopen(link).read())
+    f.close()
 
 
 def main():
@@ -50,7 +59,7 @@ def main():
 
     items = get_items(csv_file)
     links = get_links(items)
-    download_files(links)
+    parallel_start(links)
 
 if __name__ == "__main__":
     main()
