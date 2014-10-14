@@ -32,7 +32,7 @@ def parallel_start(download_map):
 def download_files(download_map):
     # TODO allow download location selection
     location = download_map[1]
-    link = download_map[0]
+    link = download_map[0][0]
     f = open((location + "\\" + link[link.rfind('/') + 1:]), 'wb')
     f.write(urllib.urlopen(link).read())
     f.close()
