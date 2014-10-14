@@ -3,6 +3,7 @@ from sqlalchemy.ext.declarative.api import declarative_base
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy import *
 import ConfigParser
+import sys
 
 
 def make_connection():
@@ -16,7 +17,7 @@ def make_connection():
     database = config.get('connection_info', 'db')
     connection = 'mysql://%s:%s@%s:%s/%s' % (username, password, hostname, port, database)
     return connection
-def main():
+def main(keep_saved):
     engine = create_engine(make_connection(), echo=False)
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -34,11 +35,11 @@ def main():
     contents = []
     for record in records:
         contents.append(record)
-
+    if not keep_saved:
     session.query(FeverItems).filter_by(is_saved=1).update({"is_saved": 0})
     session.commit()
     return contents
 
 
 if __name__ == "__main__":
-    main()
+    main(bool(sys.argv[1]))
