@@ -4,8 +4,6 @@ import optparse
 import csv
 import re
 
-# TODO download all .jpg images
-
 
 def get_items(f_obj):
     items = []
@@ -27,6 +25,11 @@ def get_links(items):
     return links
 
 
+def download_files(links):
+    # TODO download all images
+    pass
+
+
 def main():
     parser = optparse.OptionParser()
     parser.add_option('-f', '--file',
@@ -39,7 +42,7 @@ def main():
 
     items = get_items(csv_file)
     links = get_links(items)
-
+    download_files(links)
 
 if __name__ == "__main__":
     main()
