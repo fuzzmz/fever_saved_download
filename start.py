@@ -33,8 +33,6 @@ def parallel_start(download_map):
 def download_files(download_map):
     location = download_map[1]
     link = download_map[0][0]
-    if not os.path.exists(location):
-        os.makedirs(location)
     f = open((location + "\\" + link[link.rfind('/') + 1:]), 'wb')
     f.write(urllib.urlopen(link).read())
     f.close()
@@ -49,6 +47,8 @@ def main():
     (options, args) = parser.parse_args()
     keep_saved = options.keep_saved
     download_location = options.download_location
+    if not os.path.exists(download_location):
+        os.makedirs(download_location)
     items = gr(keep_saved)
     links = get_links(items)
     download_map = []
