@@ -5,7 +5,6 @@ import csv
 import re
 import urllib
 from multiprocessing.dummy import Pool as ThreadPool
-from uuid import uuid4
 
 
 def get_items(f_obj):
@@ -40,9 +39,7 @@ def parallel_start(links):
 
 
 def download_files(link):
-    # TODO verify that it works
-    # TODO use the actual file extension instead of always using .jpg
-    f = open(str(uuid4()) + ".jpg",'wb')
+    f = open(str(link[link.rfind('/')+1:]),'wb')
     f.write(urllib.urlopen(link).read())
     f.close()
 
