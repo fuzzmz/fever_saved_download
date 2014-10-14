@@ -1,10 +1,11 @@
-from optparse import OptionParser
 __author__ = 'Constantin Serban'
 
 import re
 import urllib
 from multiprocessing.dummy import Pool as ThreadPool
 from sql_connect import main as gr
+from optparse import OptionParser
+import os
 
 
 def get_links(items):
@@ -33,6 +34,8 @@ def download_files(download_map):
     # TODO allow download location selection
     location = download_map[1]
     link = download_map[0][0]
+    if not os.path.exists(location):
+        os.makedirs(location)
     f = open((location + "\\" + link[link.rfind('/') + 1:]), 'wb')
     f.write(urllib.urlopen(link).read())
     f.close()
