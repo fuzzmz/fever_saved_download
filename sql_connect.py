@@ -3,6 +3,7 @@ from sqlalchemy.dialects.mysql.base import TINYINT
 from sqlalchemy.ext.declarative.api import declarative_base
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy import *
+from sqlalchemy import update
 import ConfigParser
 
 
@@ -41,9 +42,12 @@ def main():
         added_on_time = Column(INTEGER)
 
     records = session.query(fever_items.description).filter_by(is_saved=1)
+    saved_items = session.query(fever_items.id).filter_by(is_saved=1).all()
     contents = []
     for record in records:
         contents.append(record)
+    for item in saved_items:
+        session.query(fever_items).filter_by(id=int(item)).update({"is_saved": 0})
     return contents
 
     # TODO mark posts as unsaved as you go through them
