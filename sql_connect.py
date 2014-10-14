@@ -6,7 +6,7 @@ from sqlalchemy import *
 import ConfigParser
 
 
-def main():
+def make_connection():
     # TODO ask for configuration file location
     config = ConfigParser.ConfigParser()
     config.read(".\\config.ini")
@@ -16,7 +16,9 @@ def main():
     port = config.get('connection_info', 'port')
     database = config.get('connection_info', 'db')
     connection = 'mysql://%s:%s@%s:%s/%s' % (username, password, hostname, port, database)
-    engine = create_engine(connection, echo=False)
+    return connection
+def main():
+    engine = create_engine(make_connection(), echo=False)
     Session = sessionmaker(bind=engine)
     session = Session()
 
@@ -44,6 +46,7 @@ def main():
         contents.append(record)
     return contents
 
+    # TODO mark posts as unsaved as you go through them
 
 if __name__ == "__main__":
     main()
