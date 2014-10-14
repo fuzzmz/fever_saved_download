@@ -27,17 +27,18 @@ def main():
         __tablename__ = 'fever_items'
 
         id = Column(INTEGER, primary_key=True)
+        description = Column(LONGTEXT)
+        is_saved = Column(TINYINT)
 
     records = session.query(FeverItems.description).filter_by(is_saved=1)
-    saved_items = session.query(FeverItems.id).filter_by(is_saved=1).all()
     contents = []
     for record in records:
         contents.append(record)
-    for item in saved_items:
-        session.query(FeverItems).filter_by(id=int(item)).update({"is_saved": 0})
+
+    session.query(FeverItems).filter_by(is_saved=1).update({"is_saved": 0})
+    session.commit()
     return contents
 
-    # TODO mark posts as unsaved as you go through them
 
 if __name__ == "__main__":
     main()
