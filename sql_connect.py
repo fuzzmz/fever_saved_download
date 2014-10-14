@@ -28,9 +28,10 @@ def main():
         added_on_time = Column(INTEGER)
 
     records = session.query(fever_items.description).filter_by(is_saved=1)
-    for record in records[:10]:
-        print record
-    return records
+    contents = []
+    for record in records:
+        contents.append(record)
+    return contents
 
 
 if __name__ == "__main__":
