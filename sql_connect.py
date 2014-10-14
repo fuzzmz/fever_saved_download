@@ -20,6 +20,10 @@ def make_connection(config_location):
 def main(keep_saved, config_location):
     if not config_location:
         config_location = os.path.dirname(os.path.abspath(__file__)) + "\\config.ini"
+    try:
+        open(config_location)
+    except IOError:
+        print "Problem opening config.ini at " + config_location
     engine = create_engine(make_connection(config_location), echo=False)
     Session = sessionmaker(bind=engine)
     session = Session()
