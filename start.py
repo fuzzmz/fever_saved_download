@@ -7,8 +7,19 @@ import csv
 # TODO download all .jpg images
 
 
-def get_links(f_obj):
-    # TODO read description column
+def get_items(f_obj):
+    items = []
+    with open(f_obj, 'rU') as file:
+        reader = csv.DictReader(file, dialect=csv.excel_tab)
+        for line in reader:
+            items.append(line['description'])
+    return items
+
+
+def get_links(items):
+    links = []
+    # for item in items:
+        # TODO get only image links from the post contents
     pass
 
 
@@ -22,8 +33,8 @@ def main():
     (opts, args) = parser.parse_args()
     csv_file = opts.csv_file
 
-    with open(csv_file) as f_obj:
-        links = get_links(f_obj)
+    items = get_items(csv_file)
+    links = get_links(items)
 
 
 if __name__ == "__main__":
