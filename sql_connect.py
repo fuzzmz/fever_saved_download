@@ -1,9 +1,7 @@
-from sqlalchemy.dialects.mysql.base import LONGTEXT
-from sqlalchemy.dialects.mysql.base import TINYINT
+from sqlalchemy.dialects.mysql.base import LONGTEXT, TINYINT
 from sqlalchemy.ext.declarative.api import declarative_base
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy import *
-from sqlalchemy import update
 import ConfigParser
 
 
@@ -25,29 +23,18 @@ def main():
 
     Base = declarative_base()
 
-    class fever_items(Base):
+    class FeverItems(Base):
         __tablename__ = 'fever_items'
 
         id = Column(INTEGER, primary_key=True)
-        feed_id = Column(INTEGER)
-        uid = Column(VARCHAR(255))
-        title = Column(VARCHAR(255))
-        author = Column(VARCHAR(255))
-        description = Column(LONGTEXT)
-        link = Column(VARCHAR(255))
-        url_checksum = Column(INTEGER)
-        read_on_time = Column(INTEGER)
-        is_saved = Column(TINYINT)
-        created_on_time = Column(INTEGER)
-        added_on_time = Column(INTEGER)
 
-    records = session.query(fever_items.description).filter_by(is_saved=1)
-    saved_items = session.query(fever_items.id).filter_by(is_saved=1).all()
+    records = session.query(FeverItems.description).filter_by(is_saved=1)
+    saved_items = session.query(FeverItems.id).filter_by(is_saved=1).all()
     contents = []
     for record in records:
         contents.append(record)
     for item in saved_items:
-        session.query(fever_items).filter_by(id=int(item)).update({"is_saved": 0})
+        session.query(FeverItems).filter_by(id=int(item)).update({"is_saved": 0})
     return contents
 
     # TODO mark posts as unsaved as you go through them
